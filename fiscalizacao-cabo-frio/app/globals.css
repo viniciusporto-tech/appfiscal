@@ -1,0 +1,198 @@
+/* Variáveis centrais de cor. Altere aqui para mudar a identidade visual do sistema inteiro. */
+:root {
+  --navy: #0c2f57;
+  --navy-2: #123f73;
+  --blue: #1f6feb;
+  --gold: #c8a44d;
+  --green: #178447;
+  --red: #b42318;
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #637083;
+  --border: #dce3ec;
+}
+
+/* Faz o cálculo de largura/altura incluir bordas e espaçamentos. */
+* { box-sizing: border-box; }
+
+/* Estilo geral do documento. */
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+
+/* Remove sublinhado padrão dos links. */
+a { color: inherit; text-decoration: none; }
+
+/* Mantém botões e campos usando a mesma fonte do sistema. */
+button, input, select, textarea { font: inherit; }
+
+/* Contêiner padrão das páginas internas. */
+.page { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 48px; }
+
+/* Cabeçalho usado no perfil do agente. */
+.topbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 24px; }
+
+/* Cartão branco reutilizável. */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px; box-shadow: 0 8px 24px rgba(18, 48, 84, 0.06); }
+
+/* Grade responsiva para dashboards. */
+.grid { display: grid; gap: 16px; }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Título de indicador. */
+.metric-label { color: var(--muted); font-size: 0.9rem; }
+.metric-value { font-size: 2rem; font-weight: 800; margin-top: 8px; }
+
+/* Botão principal. */
+.button { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 12px; padding: 13px 18px; cursor: pointer; font-weight: 700; background: var(--blue); color: #fff; }
+.button:disabled { opacity: 0.6; cursor: not-allowed; }
+.button-secondary { background: #e9eff8; color: var(--navy); }
+.button-danger { background: var(--red); }
+
+/* Campos de formulário. */
+.field { display: grid; gap: 7px; margin-bottom: 16px; }
+.label { font-size: 0.9rem; font-weight: 700; }
+.input, .select, .textarea { width: 100%; border: 1px solid var(--border); border-radius: 11px; padding: 12px 13px; background: #fff; color: var(--text); }
+.textarea { min-height: 100px; resize: vertical; }
+
+/* Mensagens de estado. */
+.notice { border-radius: 12px; padding: 12px 14px; margin: 12px 0; background: #eaf3ff; color: #134b85; }
+.notice-error { background: #fff0ef; color: var(--red); }
+.notice-success { background: #ecf9f1; color: var(--green); }
+
+/* Barra de navegação simples do administrador. */
+.admin-shell { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 100vh; }
+.sidebar { background: var(--navy); color: #fff; padding: 24px 18px; }
+.sidebar h2 { margin-top: 0; font-size: 1.1rem; }
+.sidebar nav { display: grid; gap: 8px; margin-top: 24px; }
+.sidebar a { padding: 10px 12px; border-radius: 10px; color: #eef6ff; }
+.sidebar a:hover { background: rgba(255,255,255,0.1); }
+.admin-content { padding: 28px; overflow-x: auto; }
+
+/* Tabela do dashboard. */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; border-bottom: 1px solid var(--border); padding: 11px 10px; white-space: nowrap; }
+th { color: var(--muted); font-size: 0.85rem; }
+
+/* Cartões de acesso rápido do agente. */
+.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.quick-action { padding: 20px 12px; text-align: center; border: 1px solid var(--border); background: #fff; border-radius: 14px; font-weight: 700; }
+
+/* Tela de login centralizada. */
+.login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: linear-gradient(160deg, var(--navy), var(--navy-2)); }
+.login-card { width: min(440px, 100%); background: #fff; border-radius: 22px; padding: 28px; }
+.login-brand { text-align: center; margin-bottom: 24px; }
+.login-brand strong { display: block; font-size: 1.35rem; color: var(--navy); }
+.login-brand span { color: var(--muted); font-size: 0.92rem; }
+
+/* Ajustes para celular. */
+@media (max-width: 850px) {
+  .grid-4, .grid-2 { grid-template-columns: 1fr; }
+  .admin-shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .admin-content { padding: 18px; }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+  .topbar { align-items: flex-start; flex-direction: column; }
+}
+
+/* -------------------------------------------------------------
+   MÓDULO ADMINISTRATIVO DE AGENTES
+   Os estilos abaixo atendem listagem, formulários e status.
+   ------------------------------------------------------------- */
+
+/* Identidade compacta no topo do menu lateral. */
+.sidebar-brand { display: grid; gap: 2px; }
+.sidebar-brand strong { font-size: 1.12rem; }
+.sidebar-brand span { color: #bfd0e5; font-size: 0.88rem; }
+
+/* Cartões menores usados para contadores da tela de agentes. */
+.compact-card { padding: 16px 18px; }
+
+/* Cabeçalho interno de uma seção administrativa. */
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+/* Limita a largura do formulário para manter leitura confortável em telas grandes. */
+.admin-form-page { max-width: 980px; }
+.agent-form { padding: 24px; }
+
+/* Título visual que separa grupos de campos dentro do formulário. */
+.form-section-title { font-weight: 800; color: var(--navy); margin: 4px 0 16px; }
+
+/* Grade de caixas de seleção das equipes. */
+.team-checkbox-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0 22px; }
+
+/* Cada equipe fica em um cartão clicável para facilitar uso em notebook ou tablet. */
+.team-checkbox { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; cursor: pointer; background: #fff; }
+.team-checkbox:hover { border-color: #a9bdd6; background: #f8fbff; }
+.team-checkbox input { width: 18px; height: 18px; }
+
+/* Agrupa os botões de cancelar e salvar no fim do formulário. */
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+/* Selo visual de status na listagem. */
+.status-badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 9px; font-size: 0.78rem; font-weight: 800; }
+.status-active { background: #e9f8ef; color: var(--green); }
+.status-inactive { background: #fff0ef; color: var(--red); }
+
+/* Ações pequenas dentro da tabela. */
+.table-actions { display: flex; align-items: center; gap: 10px; }
+.table-action { appearance: none; border: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 700; cursor: pointer; font-size: 0.88rem; }
+.table-action:disabled { opacity: 0.55; cursor: not-allowed; }
+.danger-text { color: var(--red); }
+.success-text { color: var(--green); }
+
+/* Mensagem mostrada quando ainda não existem agentes cadastrados. */
+.empty-state { text-align: center; color: var(--muted); padding: 30px 12px; }
+
+/* Em celular, os vínculos de equipe e botões passam para uma coluna. */
+@media (max-width: 650px) {
+  .team-checkbox-grid { grid-template-columns: 1fr; }
+  .form-actions { flex-direction: column-reverse; }
+  .form-actions .button { width: 100%; }
+}
+
+/* -------------------------------------------------------------
+   MÓDULO ADMINISTRATIVO DE ESCALAS / PLANTÕES
+   Os estilos abaixo atendem criação, edição e histórico de escalas.
+   ------------------------------------------------------------- */
+
+/* Mantém a página de escala confortável em monitores maiores. */
+.shift-admin-page { max-width: 1100px; }
+.shift-form { padding: 24px; }
+
+/* Ajuda textual menor posicionada abaixo de campos importantes. */
+.field-help { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+.warning-text { color: #9a6700; }
+
+/* Cabeçalho interno da área que adiciona agentes ao plantão. */
+.shift-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 6px 0 16px; }
+
+/* Lista vertical dos agentes escolhidos. */
+.assignment-list { display: grid; gap: 14px; }
+
+/* Cada vínculo de agente fica isolado em um cartão de leitura simples. */
+.assignment-card { border: 1px solid var(--border); border-radius: 14px; padding: 16px; background: #f9fbfe; }
+.assignment-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+
+/* Estado vazio da escala antes de inserir agentes. */
+.shift-empty-state { border: 1px dashed #bcc9d8; border-radius: 14px; background: #fafcff; margin-bottom: 16px; }
+
+/* Ações agrupadas no canto direito dos cabeçalhos. */
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+.inline-action-group { display: inline-flex; align-items: center; gap: 8px; }
+.inline-error { color: var(--red); font-size: 0.78rem; max-width: 220px; white-space: normal; }
+
+/* Estados específicos dos plantões. */
+.status-scheduled { background: #eaf3ff; color: #155da8; }
+.status-in-progress { background: #e9f8ef; color: var(--green); }
+.status-finished { background: #eef1f5; color: #546275; }
+.status-cancelled { background: #fff0ef; color: var(--red); }
+
+/* Em telas pequenas, cabeçalhos e ações viram coluna. */
+@media (max-width: 650px) {
+  .shift-section-heading { align-items: stretch; flex-direction: column; }
+  .shift-section-heading .button { width: 100%; }
+  .topbar-actions { width: 100%; align-items: stretch; flex-direction: column; }
+  .topbar-actions .button { width: 100%; }
+}
