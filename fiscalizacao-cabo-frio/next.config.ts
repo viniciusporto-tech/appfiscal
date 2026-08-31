@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
-// Configuração principal do Next.js.
+// Configuração central do Next.js.
+// Os IPs abaixo liberam o teste em rede local durante `next dev`.
+// Em produção (Netlify/Vercel) esta configuração não é necessária.
 const nextConfig: NextConfig = {
-  // Mantemos o modo estrito do React ativado para detectar problemas durante o desenvolvimento.
   reactStrictMode: true,
+  allowedDevOrigins: ["192.168.1.14", "192.168.1.18"],
 };
 
-// Exporta a configuração para o Next.js.
 export default nextConfig;

@@ -1,53 +1,6 @@
-// Nome do banco local criado pelo navegador do agente.
-const DATABASE_NAME = "fiscalizacao-cabo-frio";
-
-// Nome da coleção onde ficam fiscalizações aguardando sincronização.
-const STORE_NAME = "pending-inspections";
-
-// Versão do banco local. Aumente quando mudar a estrutura do IndexedDB.
-const DATABASE_VERSION = 1;
-
-// Estrutura mínima de uma fiscalização salva localmente.
-export type PendingInspection = {
-  localId: string;
-  payload: Record<string, unknown>;
-  createdAt: string;
-};
-
-// Abre (ou cria) o IndexedDB do navegador.
-function openDatabase(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    // Inicia a abertura do banco local.
-    const request = indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
-
-    // Este evento roda na primeira criação ou quando a versão do banco muda.
-    request.onupgradeneeded = () => {
-      const db = request.result;
-
-      // Cria a coleção apenas se ela ainda não existir.
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "localId" });
-      }
-    };
-
-    // Entrega o banco pronto quando a abertura termina corretamente.
-    request.onsuccess = () => resolve(request.result);
-
-    // Repassa o erro quando o navegador não consegue abrir o banco.
-    request.onerror = () => reject(request.error);
-  });
-}
-
-// Salva uma fiscalização localmente para sincronizar depois.
-export async function savePendingInspection(item: PendingInspection): Promise<void> {
-  const db = await openDatabase();
-  const transaction = db.transaction(STORE_NAME, "readwrite");
-  transaction.objectStore(STORE_NAME).put(item);
-
-  await new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(transaction.error);
-  });
-
-  db.close();
-}
+const DB_NAME="fiscalizacao-cabo-frio";const STORE="pending-inspections";const VERSION=2;
+export type PendingInspection={localId:string;payload:any;photo:Blob|null;photoName:string|null;photoType:string|null;createdAt:string};
+function openDb():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,VERSION);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:"localId"})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+export async function savePendingInspection(item:PendingInspection){const db=await openDb();await new Promise<void>((resolve,reject)=>{const tx=db.transaction(STORE,"readwrite");tx.objectStore(STORE).put(item);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)});db.close()}
+export async function listPendingInspections():Promise<PendingInspection[]>{const db=await openDb();const result=await new Promise<PendingInspection[]>((resolve,reject)=>{const req=db.transaction(STORE,"readonly").objectStore(STORE).getAll();req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});db.close();return result}
+export async function removePendingInspection(localId:string){const db=await openDb();await new Promise<void>((resolve,reject)=>{const tx=db.transaction(STORE,"readwrite");tx.objectStore(STORE).delete(localId);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error)});db.close()}
