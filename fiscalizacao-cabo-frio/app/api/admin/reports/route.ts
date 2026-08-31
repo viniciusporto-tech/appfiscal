@@ -396,7 +396,7 @@ async function buildPdf(rows: ReportRow[], fields: string[], columns: Record<str
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
   const pageSize: [number, number] = [595.28, 841.89];
   const margin = 40;
-  let page: PDFPage;
+  let page!: PDFPage;
   let y = 0;
 
   function newPage() {
