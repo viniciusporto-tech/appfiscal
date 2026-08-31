@@ -18,30 +18,65 @@ export function DecreeUploadForm() {
   const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSubmitting(true);
-    setMessage("");
-    setIsError(false);
+  event.preventDefault();
 
-    // O próprio formulário contém o campo de arquivo.
-    const formData = new FormData(event.currentTarget);
+  // Guarda a referência do formulário antes de qualquer await.
+  const form = event.currentTarget;
 
-    // Garante que o valor mais atual do nome seja enviado.
-    formData.set("name", name);
+  setSubmitting(true);
+  setMessage("");
+  setIsError(false);
 
-    try {
-      const response = await fetch("/api/admin/decrees", {
-        method: "POST",
-        body: formData,
-      });
+  const formData = new FormData(form);
+  formData.set("name", name);
 
-      const result = await response.json();
+  try {
+    const response = await fetch("/api/admin/decrees", {
+      method: "POST",
+      body: formData,
+    });
 
-      if (!response.ok) {
-        setIsError(true);
-        setMessage(result.error ?? "Não foi possível cadastrar o decreto.");
-        return;
+    const text = await response.text();
+
+    let result: {
+      message?: string;
+      error?: string;
+    } = {};
+
+    if (text) {
+      try {
+        result = JSON.parse(text);
+      } catch {
+        result = {};
       }
+    }
+
+    if (!response.ok) {
+      setIsError(true);
+      setMessage(
+        result.error ??
+          `Não foi possível cadastrar o decreto. Código ${response.status}.`,
+      );
+      return;
+    }
+
+    form.reset();
+    setName("");
+    setIsError(false);
+    setMessage(
+      result.message ?? "Decreto cadastrado com sucesso.",
+    );
+
+    router.refresh();
+  } catch (error) {
+    console.error("Erro no formulário de decreto:", error);
+
+    setIsError(true);
+    setMessage("Falha de comunicação com o servidor.");
+  } finally {
+    setSubmitting(false);
+  }
+}
 
       // Limpa o formulário depois do sucesso.
       event.currentTarget.reset();
