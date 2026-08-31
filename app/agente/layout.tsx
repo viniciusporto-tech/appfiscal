@@ -1,0 +1,2 @@
+import {redirect} from "next/navigation";import {createClient} from "@/lib/supabase/server";
+export default async function AgentLayout({children}:{children:React.ReactNode}){const s=await createClient();const {data:{user}}=await s.auth.getUser();if(!user)redirect("/login");const {data:p}=await s.from("profiles").select("role,status").eq("id",user.id).single();if(!p||p.status!=="active")redirect("/login");if(p.role==="admin")redirect("/admin");return children}

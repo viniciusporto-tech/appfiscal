@@ -1,0 +1,3 @@
+"use client";
+import {useState} from "react";import {useRouter} from "next/navigation";
+export function ShiftCancelButton({shiftId}:{shiftId:string}){const router=useRouter();const [loading,setLoading]=useState(false);async function cancel(){if(!confirm("Cancelar este plantão? O histórico será preservado."))return;setLoading(true);try{const r=await fetch(`/api/admin/shifts/${shiftId}`,{method:"DELETE"});const j=await r.json();if(!r.ok)throw new Error(j.error??"Falha ao cancelar.");router.push("/admin/escalas");router.refresh()}catch(e){alert(e instanceof Error?e.message:"Falha ao cancelar.")}finally{setLoading(false)}}return <button className="button button-danger" type="button" disabled={loading} onClick={cancel}>{loading?"Cancelando...":"Cancelar plantão"}</button>}
